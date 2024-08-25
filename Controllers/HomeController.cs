@@ -11,6 +11,7 @@ namespace RetailWebApp_st10298329.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+
         }
 
         public IActionResult Index()
