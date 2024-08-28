@@ -1,4 +1,18 @@
+using Azure.Storage.Blobs;
+using Azure.Storage.Queues;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using RetailWebApp_st10298329.Services;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Register services with the connection string from appsettings.json
+var azureStorageConnectionString = builder.Configuration.GetConnectionString("AzureStorage");
+
+builder.Services.AddSingleton(new TableStorageService(azureStorageConnectionString));
+builder.Services.AddSingleton(new BlobStorageService(azureStorageConnectionString));
+builder.Services.AddSingleton(new QueueStorageService(azureStorageConnectionString));
+builder.Services.AddSingleton(new FileStorageService(azureStorageConnectionString));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

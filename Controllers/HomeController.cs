@@ -1,17 +1,34 @@
 using Microsoft.AspNetCore.Mvc;
 using RetailWebApp_st10298329.Models;
 using System.Diagnostics;
+using Azure.Data.Tables;
+using Azure.Storage.Blobs;
+using Azure.Storage.Queues;
+using Azure.Storage.Files.Shares;
+using Microsoft.Extensions.Logging;
 
 namespace RetailWebApp_st10298329.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly TableClient _tableClient;
+        private readonly BlobContainerClient _blobContainerClient;
+        private readonly QueueClient _queueClient;
+        private readonly ShareClient _shareClient;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(
+            ILogger<HomeController> logger,
+            TableClient tableClient,
+            BlobContainerClient blobContainerClient,
+            QueueClient queueClient,
+            ShareClient shareClient)
         {
-            _logger = logger;
-
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _tableClient = tableClient ?? throw new ArgumentNullException(nameof(tableClient));
+            _blobContainerClient = blobContainerClient ?? throw new ArgumentNullException(nameof(blobContainerClient));
+            _queueClient = queueClient ?? throw new ArgumentNullException(nameof(queueClient));
+            _shareClient = shareClient ?? throw new ArgumentNullException(nameof(shareClient));
         }
 
         public IActionResult Index()

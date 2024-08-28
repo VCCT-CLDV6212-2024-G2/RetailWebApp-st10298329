@@ -1,4 +1,6 @@
-﻿namespace RetailWebApp_st10298329.Services
+﻿using Azure.Storage.Blobs;
+
+namespace RetailWebApp_st10298329.Services
 {
     public class BlobStorageService
     {
