@@ -3,7 +3,7 @@ using Azure.Data.Tables;
 
 namespace RetailWebApp_st10298329.Models
 {
-    public class CustomerProfile : ITableEntity
+    public class ProductClass : ITableEntity
     {
         public string PartitionKey { get; set; }
         public string RowKey { get; set; }
@@ -12,13 +12,13 @@ namespace RetailWebApp_st10298329.Models
 
         // Your existing properties
         public string Name { get; set; }
-        public string Email { get; set; }
-        public string Address { get; set; }
+        public decimal Price { get; set; }
+        public string Description { get; set; }
 
-        // Default constructor is needed for TableEntity deserialization
-        public CustomerProfile() { }
+        // Default constructor for TableEntity deserialization
+        public ProductClass() { }
 
-        public CustomerProfile(string partitionKey, string rowKey)
+        public ProductClass(string partitionKey, string rowKey)
         {
             PartitionKey = partitionKey;
             RowKey = rowKey;

@@ -18,7 +18,7 @@ namespace RetailWebApp_st10298329.Services
             await _queueClient.SendMessageAsync(message);
         }
 
-        public async Task<string> ReceiveMessageAsync()
+        public async Task<string?> ReceiveMessageAsync()
         {
             var response = await _queueClient.ReceiveMessageAsync();
             return response?.Value?.MessageText;

@@ -1,4 +1,5 @@
 ﻿using Azure.Data.Tables;
+using RetailWebApp_st10298329.Models;
 
 namespace RetailWebApp_st10298329.Services
 {
@@ -16,24 +17,24 @@ namespace RetailWebApp_st10298329.Services
             _productTableClient.CreateIfNotExists();
         }
 
-        public async Task AddCustomerAsync(CustomerEntity customer)
+        public async Task AddCustomerAsync(CustomerProfile customer)
         {
-            await _customerTableClient.AddEntityAsync(customer);
+            await _customerTableClient.AddEntityAsync(customer); 
         }
 
-        public async Task<CustomerEntity> GetCustomerAsync(string partitionKey, string rowKey)
+        public async Task<CustomerProfile> GetCustomerAsync(string partitionKey, string rowKey)
         {
-            return await _customerTableClient.GetEntityAsync<CustomerEntity>(partitionKey, rowKey);
+            return await _customerTableClient.GetEntityAsync<CustomerProfile>(partitionKey, rowKey);
         }
 
-        public async Task AddProductAsync(ProductEntity product)
+        public async Task AddProductAsync(ProductClass product)
         {
             await _productTableClient.AddEntityAsync(product);
         }
 
-        public async Task<ProductEntity> GetProductAsync(string partitionKey, string rowKey)
+        public async Task<ProductClass> GetProductAsync(string partitionKey, string rowKey)
         {
-            return await _productTableClient.GetEntityAsync<ProductEntity>(partitionKey, rowKey);
+            return await _productTableClient.GetEntityAsync<ProductClass>(partitionKey, rowKey);
         }
     }
 }

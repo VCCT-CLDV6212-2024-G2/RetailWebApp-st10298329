@@ -1,7 +1,3 @@
-using Azure.Storage.Blobs;
-using Azure.Storage.Queues;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using RetailWebApp_st10298329.Services;
 
 var builder = WebApplication.CreateBuilder(args);
