@@ -12,20 +12,23 @@ namespace RetailWebApp_st10298329.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly TableClient _tableClient;
         private readonly BlobContainerClient _blobContainerClient;
+        private readonly TableClient _customerTableClient;
+        private readonly TableClient _productTableClient;
         private readonly QueueClient _queueClient;
         private readonly ShareClient _shareClient;
 
         public HomeController(
             ILogger<HomeController> logger,
-            TableClient tableClient,
-            BlobContainerClient blobContainerClient,
-            QueueClient queueClient,
-            ShareClient shareClient)
+             BlobContainerClient blobContainerClient,
+             TableClient customerTableClient,
+             TableClient productTableClient,
+             QueueClient queueClient,
+             ShareClient shareClient)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _tableClient = tableClient ?? throw new ArgumentNullException(nameof(tableClient));
+            _customerTableClient = customerTableClient ?? throw new ArgumentNullException(nameof(customerTableClient));
+            _productTableClient = productTableClient ?? throw new ArgumentNullException(nameof(productTableClient));
             _blobContainerClient = blobContainerClient ?? throw new ArgumentNullException(nameof(blobContainerClient));
             _queueClient = queueClient ?? throw new ArgumentNullException(nameof(queueClient));
             _shareClient = shareClient ?? throw new ArgumentNullException(nameof(shareClient));

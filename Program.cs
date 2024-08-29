@@ -1,3 +1,7 @@
+using Azure.Data.Tables;
+using Azure.Storage.Blobs;
+using Azure.Storage.Queues;
+using Azure.Storage.Files.Shares;
 using RetailWebApp_st10298329.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,12 +9,37 @@ var builder = WebApplication.CreateBuilder(args);
 // Register services with the connection string from appsettings.json
 var azureStorageConnectionString = builder.Configuration.GetConnectionString("AzureStorage");
 
-builder.Services.AddSingleton(new TableStorageService(azureStorageConnectionString));
-builder.Services.AddSingleton(new BlobStorageService(azureStorageConnectionString));
-builder.Services.AddSingleton(new QueueStorageService(azureStorageConnectionString));
-builder.Services.AddSingleton(new FileStorageService(azureStorageConnectionString));
+if (azureStorageConnectionString != null)
+{
+    // Register BlobContainerClient with the DI container
+    builder.Services.AddSingleton<BlobContainerClient>(sp =>
+    {
+        var blobServiceClient = new BlobServiceClient(azureStorageConnectionString);
+        return blobServiceClient.GetBlobContainerClient("product-images");
+    });
 
-// Add services to the container.
+    // Register TableClient instances for each table
+    builder.Services.AddSingleton(sp =>
+        new TableClient(azureStorageConnectionString, "CustomerProfilesTable"));
+
+    builder.Services.AddSingleton(sp =>
+        new TableClient(azureStorageConnectionString, "ProductsTable"));
+
+    // Register QueueClient for Azure Queue Storage
+    builder.Services.AddSingleton<QueueClient>(sp =>
+    {
+        var queueServiceClient = new QueueServiceClient(azureStorageConnectionString);
+        return queueServiceClient.GetQueueClient("order-queue");
+    });
+
+    // Register ShareClient for Azure File Storage
+    builder.Services.AddSingleton<ShareClient>(sp =>
+    {
+        var shareServiceClient = new ShareServiceClient(azureStorageConnectionString);
+        return shareServiceClient.GetShareClient("logs");
+    });
+}
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -19,7 +48,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
