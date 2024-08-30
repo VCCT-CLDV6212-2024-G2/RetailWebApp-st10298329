@@ -6,6 +6,8 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Queues;
 using Azure.Storage.Files.Shares;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+
 
 namespace RetailWebApp_st10298329.Controllers
 {
@@ -16,21 +18,25 @@ namespace RetailWebApp_st10298329.Controllers
         private readonly ShareClient _shareClient;
         private readonly TableClient _customerTableClient;
         private readonly TableClient _productTableClient;
-        private readonly QueueClient _queueClient;
+        private readonly QueueClient _transactionQueueClient;
+        private readonly QueueClient _inventoryQueueClient;
 
-        public HomeController(ILogger<HomeController> logger ,BlobContainerClient blobContainerClient, ShareClient shareClient, TableClient customerTableClient, TableClient productTableClient, QueueClient queueClient)
+        public HomeController(ILogger<HomeController> logger ,BlobContainerClient blobContainerClient, 
+            ShareClient shareClient, TableClient customerTableClient, TableClient productTableClient,
+            QueueClient queueClient, QueueClient transactionQueueClient, QueueClient inventoryQueueClient)
         {
             _blobContainerClient = blobContainerClient;
             _shareClient = shareClient;
             _customerTableClient = customerTableClient;
             _logger = logger;
             _productTableClient = productTableClient;
-            _queueClient = queueClient;
+            _transactionQueueClient =   transactionQueueClient;
+            _inventoryQueueClient = inventoryQueueClient;
         }
 
         // Upload File to Azure File Storage
         [HttpPost]
-        public async Task<IActionResult> UploadFileToAzureFileStorage(IFormFile file)
+        public async Task<IActionResult> UploadFileToAzure(IFormFile file)
         {
             if (file != null && file.Length > 0)
             {
@@ -128,30 +134,38 @@ namespace RetailWebApp_st10298329.Controllers
             return RedirectToAction("Index");
         }
 
-        // Process Order
-        [HttpPost]
-        public async Task<IActionResult> ProcessOrder(string orderId)
+        // Method to enqueue a transaction
+        public async Task<IActionResult> EnqueueTransaction(string transactionId, decimal amount)
         {
-            if (!string.IsNullOrEmpty(orderId))
+            var transactionMessage = new
             {
-                var message = new BinaryData($"Order {orderId} processed");
-                await _queueClient.SendMessageAsync(message);
-            }
+                Type = "Transaction",
+                TransactionId = transactionId,
+                Amount = amount,
+                Timestamp = DateTime.UtcNow
+            };
+
+            string messageContent = JsonConvert.SerializeObject(transactionMessage);
+            await _transactionQueueClient.SendMessageAsync(Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(messageContent)));
+
             return RedirectToAction("Index");
         }
 
-        // Upload Contract
-        [HttpPost]
-        public async Task<IActionResult> UploadContract(IFormFile file)
+        // Method to enqueue an inventory process
+        public async Task<IActionResult> EnqueueInventory(string productId, int quantity, string action)
         {
-            if (file != null && file.Length > 0)
+            var inventoryMessage = new
             {
-                var blobClient = _blobContainerClient.GetBlobClient("contracts/" + file.FileName);
-                using (var stream = file.OpenReadStream())
-                {
-                    await blobClient.UploadAsync(stream, true);
-                }
-            }
+                Type = "Inventory",
+                ProductId = productId,
+                Quantity = quantity,
+                Action = action,
+                Timestamp = DateTime.UtcNow
+            };
+
+            string messageContent = JsonConvert.SerializeObject(inventoryMessage);
+            await _inventoryQueueClient.SendMessageAsync(Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(messageContent)));
+
             return RedirectToAction("Index");
         }
 
