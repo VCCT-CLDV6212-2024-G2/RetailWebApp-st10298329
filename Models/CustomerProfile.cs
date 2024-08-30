@@ -11,9 +11,12 @@ namespace RetailWebApp_st10298329.Models
         public ETag ETag { get; set; }
 
         // Your existing properties
-        public string Name { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
+
+        public string PhoneNumber { get; set; }
 
         // Default constructor is needed for TableEntity deserialization
         public CustomerProfile() { }

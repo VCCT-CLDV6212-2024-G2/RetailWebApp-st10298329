@@ -1,27 +1,72 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<RetailWebApp_st10298329.Models.CustomerProfile>
 
-<div class="jumbotron">
-    <h1>Welcome to Retail WebApp</h1>
-    <p class="lead">Discover the best products at unbeatable prices.</p>
-    <a class="btn btn-primary btn-lg" href="@Url.Action("Products", "Home")" role="button">Shop Now</a>
+<div class="container mt-5">
+    <h1 class="text-center">Dashboard</h1>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Upload File to Azure File Storage</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="UploadFileToAzureFileStorage" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="file">Choose File</label>
+                            <input type="file" name="file" id="file" class="form-control" />
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Upload File</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Upload Image to Azure Blob Storage</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="UploadImageToAzureBlobStorage" method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="image">Choose Image</label>
+                            <input type="file" name="file" id="image" class="form-control" />
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Upload Image</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Add Customer Profile</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="AddCustomerProfile" method="post">
+                        <div class="form-group">
+                            <input type="text" name="FirstName" placeholder="First Name" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="LastName" placeholder="Last Name" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <input type="email" name="Email" placeholder="Email" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <input type="text" name="PhoneNumber" placeholder="Phone Number" class="form-control" />
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Add Profile</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Featured Products</h2>
-        <p>Check out our featured products!</p>
-        <a class="btn btn-secondary" href="@Url.Action("Products", "Home")">View Products</a>
-    </div>
-    <div class="col-md-4">
-        <h2>Special Offers</h2>
-        <p>Don't miss our special discounts and offers.</p>
-        <a class="btn btn-secondary" href="@Url.Action("Products", "Home")">View Offers</a>
-    </div>
-    <div class="col-md-4">
-        <h2>Categories</h2>
-        <p>Browse our products by categories.</p>
-        <a class="btn btn-secondary" href="@Url.Action("Categories", "Home")">Browse Categories</a>
-    </div>
-</div>
+<a class="btn btn-primary" href="@Url.Action("AddProduct", "Home")">Add New Product</a>
+
+
