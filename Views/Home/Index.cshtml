@@ -9,24 +9,17 @@
                     <h3>Upload File</h3>
                 </div>
                 <div class="card-body">
-                    <form asp-action="File Upload" method="post" enctype="multipart/form-data">
+                    <form asp-action="UploadFileToAzure" method="post" enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="file">Choose File</label>
+                            <label for="file">Choose file to upload:</label>
                             <input type="file" name="file" id="file" class="form-control" />
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block">Upload File</button>
+                        <button type="submit" class="btn btn-primary">Upload File</button>
                     </form>
                 </div>
             </div>
         </div>
 
-        <form asp-action="UploadFileToAzure" method="post" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="file">Choose file to upload:</label>
-                <input type="file" name="file" id="file" class="form-control" />
-            </div>
-            <button type="submit" class="btn btn-primary">Upload File</button>
-        </form>
         <a class="btn btn-primary" href="@Url.Action("AddProduct", "Home")">Add New Product</a>
 
     </div>
