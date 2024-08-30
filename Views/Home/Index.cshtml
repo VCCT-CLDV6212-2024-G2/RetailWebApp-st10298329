@@ -1,5 +1,4 @@
-﻿@model IEnumerable<RetailWebApp_st10298329.Models.CustomerProfile>
-
+﻿
 <div class="container mt-5">
     <h1 class="text-center">Dashboard</h1>
 
@@ -10,29 +9,12 @@
                     <h3>Upload File to Azure File Storage</h3>
                 </div>
                 <div class="card-body">
-                    <form asp-action="UploadFileToAzureFileStorage" method="post" enctype="multipart/form-data">
+                    <form asp-action="File Upload" method="post" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="file">Choose File</label>
                             <input type="file" name="file" id="file" class="form-control" />
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">Upload File</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h3>Upload Image to Azure Blob Storage</h3>
-                </div>
-                <div class="card-body">
-                    <form asp-action="UploadImageToAzureBlobStorage" method="post" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label for="image">Choose Image</label>
-                            <input type="file" name="file" id="image" class="form-control" />
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">Upload Image</button>
                     </form>
                 </div>
             </div>
@@ -43,7 +25,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h3>Add Customer Profile</h3>
+                    <h3>Add Customer </h3>
                 </div>
                 <div class="card-body">
                     <form asp-action="AddCustomerProfile" method="post">
